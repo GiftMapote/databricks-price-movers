@@ -36,3 +36,15 @@ This project addresses those gaps by delivering an end-to-end pipeline that:
 
 ## Example use case
 A trader, analyst, or fintech team can use this dashboard to quickly identify which assets are gaining or losing momentum and review recent movement history without manually checking multiple exchanges or websites.
+
+## Architecture
+```mermaid
+flowchart LR
+  A[CoinGecko API] --> B["Collector Notebook\n01_collector_write_raw"]
+  B --> C["ADLS Gen2\nraw/YYYY-MM-DD/HH"]
+  C --> D["Bronze: Auto Loader\nbronze_prices_raw"]
+  D --> E["Silver Transform\nsilver_prices"]
+  E --> F["Gold Aggregations\ngold_hourly_prices_sa\ngold_hourly_movers_sa"]
+  F --> G["Databricks SQL Dashboard\nPrice Movers (ZAR) - SA Time"]
+
+```
