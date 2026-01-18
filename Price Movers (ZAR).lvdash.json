@@ -1,0 +1,494 @@
+{
+  "datasets": [
+    {
+      "name": "b7d4e018",
+      "displayName": "Hourly Trend",
+      "queryLines": [
+        "SELECT\n",
+        "  hour_ts_sa,\n",
+        "  asset_id,\n",
+        "  vs_currency,\n",
+        "  avg_price,\n",
+        "  samples\n",
+        "FROM gold_hourly_prices\n",
+        "WHERE hour_ts >= now() - INTERVAL 24 HOURS\n",
+        "ORDER BY hour_ts_sa;\n"
+      ],
+      "catalog": "databricks_cata",
+      "schema": "price_movers"
+    },
+    {
+      "name": "8c4b59d4",
+      "displayName": "Top Movers (Latest Hour)",
+      "queryLines": [
+        "WITH latest_hour AS (\n",
+        "  SELECT MAX(hour_ts_sa) AS max_hour\n",
+        "  FROM gold_hourly_movers\n",
+        ")\n",
+        "SELECT\n",
+        "  m.asset_id,\n",
+        "  m.vs_currency,\n",
+        "  m.hour_ts_sa,\n",
+        "  m.avg_price,\n",
+        "  m.prev_avg_price,\n",
+        "  m.pct_change,\n",
+        "  samples\n",
+        "FROM gold_hourly_movers m\n",
+        "JOIN latest_hour h\n",
+        "  ON m.hour_ts_sa = h.max_hour\n",
+        "ORDER BY m.pct_change DESC;\n"
+      ],
+      "catalog": "databricks_cata",
+      "schema": "price_movers"
+    }
+  ],
+  "pages": [
+    {
+      "name": "6eb55008",
+      "displayName": "Overview",
+      "layout": [
+        {
+          "widget": {
+            "name": "ee87afbd",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "8c4b59d4",
+                  "fields": [
+                    {
+                      "name": "asset_id",
+                      "expression": "`asset_id`"
+                    },
+                    {
+                      "name": "avg_price",
+                      "expression": "`avg_price`"
+                    },
+                    {
+                      "name": "prev_avg_price",
+                      "expression": "`prev_avg_price`"
+                    },
+                    {
+                      "name": "pct_change",
+                      "expression": "`pct_change`"
+                    },
+                    {
+                      "name": "samples",
+                      "expression": "`samples`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "asset_id",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 100000,
+                    "title": "asset_id",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "avg_price",
+                    "numberFormat": "0.00",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "float",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100003,
+                    "title": "avg_price",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "prev_avg_price",
+                    "numberFormat": "0.00",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "float",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100004,
+                    "title": "prev_avg_price",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "pct_change",
+                    "numberFormat": "0.00",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "float",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100005,
+                    "title": "pct_change",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "samples",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 100006,
+                    "title": "samples",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  }
+                ]
+              },
+              "invisibleColumns": [
+                {
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "vs_currency",
+                  "type": "string",
+                  "displayAs": "string",
+                  "order": 100001,
+                  "title": "vs_currency",
+                  "allowSearch": false,
+                  "alignContent": "left",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                },
+                {
+                  "dateTimeFormat": "DD/MM/YYYY HH:mm:ss.SSS",
+                  "booleanValues": [
+                    "false",
+                    "true"
+                  ],
+                  "imageUrlTemplate": "{{ @ }}",
+                  "imageTitleTemplate": "{{ @ }}",
+                  "imageWidth": "",
+                  "imageHeight": "",
+                  "linkUrlTemplate": "{{ @ }}",
+                  "linkTextTemplate": "{{ @ }}",
+                  "linkTitleTemplate": "{{ @ }}",
+                  "linkOpenInNewTab": true,
+                  "name": "hour_ts_sa",
+                  "type": "datetime",
+                  "displayAs": "datetime",
+                  "order": 100002,
+                  "title": "hour_ts_sa",
+                  "allowSearch": false,
+                  "alignContent": "right",
+                  "allowHTML": false,
+                  "highlightLinks": false,
+                  "useMonospaceFont": false,
+                  "preserveWhitespace": false
+                }
+              ],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 25,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": false
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "332621de",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "b7d4e018",
+                  "fields": [
+                    {
+                      "name": "asset_id",
+                      "expression": "`asset_id`"
+                    },
+                    {
+                      "name": "vs_currency",
+                      "expression": "`vs_currency`"
+                    },
+                    {
+                      "name": "sum(avg_price)",
+                      "expression": "SUM(`avg_price`)"
+                    },
+                    {
+                      "name": "sum(samples)",
+                      "expression": "SUM(`samples`)"
+                    },
+                    {
+                      "name": "hourly(hour_ts_sa)",
+                      "expression": "DATE_TRUNC(\"HOUR\", `hour_ts_sa`)"
+                    },
+                    {
+                      "name": "avg(avg_price)",
+                      "expression": "AVG(`avg_price`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`asset_id` IN (`asset_id`) OR TRUE"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "hourly(hour_ts_sa)",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(avg_price)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "asset_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "extra": [
+                  {
+                    "fieldName": "vs_currency"
+                  },
+                  {
+                    "fieldName": "sum(avg_price)"
+                  },
+                  {
+                    "fieldName": "sum(samples)"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "63676a99",
+            "queries": [
+              {
+                "name": "dashboards/01f0f44256e61a38b3ea6460304c4065/datasets/01f0f442b9a512dab6117cfef454f144_asset_id",
+                "query": {
+                  "datasetName": "b7d4e018",
+                  "fields": [
+                    {
+                      "name": "asset_id",
+                      "expression": "`asset_id`"
+                    },
+                    {
+                      "name": "asset_id_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "asset_id",
+                    "queryName": "dashboards/01f0f44256e61a38b3ea6460304c4065/datasets/01f0f442b9a512dab6117cfef454f144_asset_id"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 1,
+            "width": 2,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "9054f9f0",
+            "queries": [
+              {
+                "name": "dashboards/01f0f44256e61a38b3ea6460304c4065/datasets/01f0f44308e0156b8d0afa57b45d0e92_hourly(hour_ts_sa)",
+                "query": {
+                  "datasetName": "8c4b59d4",
+                  "fields": [
+                    {
+                      "name": "hourly(hour_ts_sa)",
+                      "expression": "DATE_TRUNC(\"HOUR\", `hour_ts_sa`)"
+                    },
+                    {
+                      "name": "hourly(hour_ts_sa)_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "hourly(hour_ts_sa)",
+                    "queryName": "dashboards/01f0f44256e61a38b3ea6460304c4065/datasets/01f0f44308e0156b8d0afa57b45d0e92_hourly(hour_ts_sa)"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 1,
+            "width": 2,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "c1daa513",
+            "multilineTextboxSpec": {
+              "lines": [
+                "Price Mover (ZAR)     \t\tUpdated every 5 minutes\t\t\tSource: CoinGecko"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 1
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
