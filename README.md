@@ -38,13 +38,34 @@ This project addresses those gaps by delivering an end-to-end pipeline that:
 A trader, analyst, or fintech team can use this dashboard to quickly identify which assets are gaining or losing momentum and review recent movement history without manually checking multiple exchanges or websites.
 
 ## Architecture
-```mermaid
-flowchart LR
-  A[CoinGecko API] --> B["Collector Notebook\n01_collector_write_raw"]
-  B --> C["ADLS Gen2\nraw/YYYY-MM-DD/HH"]
-  C --> D["Bronze: Auto Loader\nbronze_prices_raw"]
-  D --> E["Silver Transform\nsilver_prices"]
-  E --> F["Gold Aggregations\ngold_hourly_prices_sa\ngold_hourly_movers_sa"]
-  F --> G["Databricks SQL Dashboard\nPrice Movers (ZAR) - SA Time"]
+![Archicture](docs/diagrams/Architecture.png)
 
-```
+## Tech stack
+- **Azure Databrics** (notebooks, jobs, Auto Loader, Delta Lake)
+- **Azure Data Lake Storage Gen2 (ADLS)** (raw storage)
+- **Delta Lake** (Bronze/Silver/Gold tables)
+- **Databricks SQL Warehouse** (dashboard queries + visualizations)
+- **CoinGecko API** (data source)
+- **GitHub** (version control + documentation)
+
+## Data Layers and tables (Medallion)
+- **Bronze Layer** : 'bronze_prices_raw' -> raw ingested API records + metadata
+- **Silver Layer** : 'silver_prices' -> Normalized rows
+- **Gold Laye** : 'gold_hourly_prices' and 'gold_hourly_movers' -> Final Aggregates
+
+## Prerequisites
+- Azure Databricks workspace + cluster
+- ADLS Gen2 connected
+- Unity Catalog
+- SQL Warehouse for dashboard
+
+## Notebooks
+1. 01_collector_write_raw
+2. 02_bronze_autoloader
+3. 03_silver_transform
+4. 04_gold_aggregations
+
+## Dashboard
+Published dashboars (may required Databricks workspace access):
+https://adb-7405614192573628.8.azuredatabricks.net/dashboardsv3/01f0f46ca0df17268b1cc0f3ef828920/published?o=7405614192573628
+
