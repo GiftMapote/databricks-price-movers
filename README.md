@@ -74,4 +74,7 @@ https://adb-7405614192573628.8.azuredatabricks.net/dashboardsv3/01f0f46ca0df1726
 ![Dashboard Overview](docs/screenshots/Dashboard.png)
 
 ### 2) Job Schedule Pipeline
-![Jobs Schedule]('docs/screenshots/Job Run.png')
+![Jobs Schedule](docs/screenshots/jobrun.png)
+
+### 3) Medallion tables (Bronze/ Silver/ Gold
+![Tables](docs/screenshots/catalog_view.png)
