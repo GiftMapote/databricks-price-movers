@@ -69,3 +69,9 @@ A trader, analyst, or fintech team can use this dashboard to quickly identify wh
 Published dashboars (may required Databricks workspace access):
 https://adb-7405614192573628.8.azuredatabricks.net/dashboardsv3/01f0f46ca0df17268b1cc0f3ef828920/published?o=7405614192573628
 
+## Project screenshots
+### 1) Dashboard overview
+![Dashboard Overview](docs/screenshots/Dashboard.png)
+
+### 2) Job Schedule Pipeline
+![Jobs Schedule]('docs/screenshots/Job Run.png')
